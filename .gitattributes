@@ -1,0 +1,14 @@
+# Git LFS tracking — large binary trajectory/simulation files
+# Run `git lfs install` once per machine before cloning/pushing this repo.
+# MD trajectories and checkpoint/energy files (can be tens-hundreds of MB each)
+*.xtc filter=lfs diff=lfs merge=lfs -text
+*.trr filter=lfs diff=lfs merge=lfs -text
+*.cpt filter=lfs diff=lfs merge=lfs -text
+*.edr filter=lfs diff=lfs merge=lfs -text
+# Packaged ensemble prediction archives
+*.tar.gz filter=lfs diff=lfs merge=lfs -text
+# BioEmu raw sample batches
+*.npz filter=lfs diff=lfs merge=lfs -text
+# Apptainer/Singularity container images (if ever added — afsample2_v1.1.sif is 6.1GB,
+# NOT recommended to commit; see DATA_SETUP.md)
+*.sif filter=lfs diff=lfs merge=lfs -text
