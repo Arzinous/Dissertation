@@ -56,7 +56,7 @@ confirmation prompts), with two exceptions noted in the table.
 | AFsample2 | `04_diversity_representative` | `protein.pdb` | |
 | AFsample2 | `05_discordance` | `protein_disulfide_geometry.pdb` | Distinct input — suggests a disulfide-geometry fix was needed before this seed's `pdb2gmx` succeeded |
 | MSA Subsampling | `01_fidelity_apo` | `protein.pdb` | **Missing `-ff` flag** — see `../force_field/README.md`; excluded from analysis regardless |
-| MSA Subsampling | `02_fidelity_ligand` | — | **No live `pdb2gmx.log` found** — `topol.top` exists (19 Jul, 17:52) but its generating log is missing from the expected location |
+| MSA Subsampling | `02_fidelity_ligand` | `02_fidelity_ligand.pdb` | **Confirmed ran unionised — see `../box_solvation_ionisation/README.md` for full finding.** Used automatic (reference-style) protonation/disulfide assignment, not the interactive pattern used elsewhere; force field included via a non-standard path referencing a local copy inside the sibling `01_fidelity_apo` directory. |
 | MSA Subsampling | `03_transition_state` | `original_nonminimised.pdb` | |
 | MSA Subsampling | `04_diversity_representative` | `original_nonminimised_cyx.pdb` | `_cyx` suggests a disulfide (CYX residue type) correction was applied |
 | MSA Subsampling | `05_discordance` | `protein_disulfide.pdb` | Only flags used: `-ignh -ss` (no `-his -ter`) — protonation/terminus handling differs from the other MSA Subsampling seeds; not resolved further in this pass |
