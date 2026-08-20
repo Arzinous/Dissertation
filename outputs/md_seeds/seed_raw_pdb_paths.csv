@@ -1,0 +1,12 @@
+model,criterion,source,seed_pdb_path,raw_pdb_path
+MSA Subsampling,02_fidelity_ligand,MSA:msa_032_064:rank014_model5_seed0,../outputs/md_seeds/MSA_Subsampling/02_fidelity_ligand.pdb,data/raw/af2_msa_sweep/msa_032_064/IL-2_pdb_1M47_unrelaxed_rank_014_alphafold2_ptm_model_5_seed_000.pdb
+MSA Subsampling,03_transition_state,MSA:msa_008_016:rank038_model1_seed0,../outputs/md_seeds/MSA_Subsampling/03_transition_state.pdb,data/raw/af2_msa_sweep/msa_008_016/IL-2_pdb_1M47_unrelaxed_rank_038_alphafold2_ptm_model_1_seed_000.pdb
+MSA Subsampling,04_diversity_representative,MSA:full_msa:rank032_model1_seed1,../outputs/md_seeds/MSA_Subsampling/04_diversity_representative.pdb,data/raw/af2_msa_sweep/full_msa/IL-2_pdb_1M47_unrelaxed_rank_032_alphafold2_ptm_model_1_seed_001.pdb
+MSA Subsampling,05_discordance,MSA:msa_008_016:rank040_model2_seed3,../outputs/md_seeds/MSA_Subsampling/05_discordance.pdb,data/raw/af2_msa_sweep/msa_008_016/IL-2_pdb_1M47_unrelaxed_rank_040_alphafold2_ptm_model_2_seed_003.pdb
+AFsample2,02_fidelity_ligand,AFS2:frac_015:model4_pred4,../outputs/md_seeds/AFsample2/02_fidelity_ligand.pdb,data/raw/afsample2/outputs/frac_015/il2/afsample2/unrelaxed_model_4_pred_4_rand0.15_dropout.pdb
+AFsample2,03_transition_state,AFS2:frac_030:model5_pred4,../outputs/md_seeds/AFsample2/03_transition_state.pdb,data/raw/afsample2/outputs/frac_030/il2/afsample2/unrelaxed_model_5_pred_4_rand0.3_dropout.pdb
+AFsample2,04_diversity_representative,AFS2:frac_015:model3_pred8,../outputs/md_seeds/AFsample2/04_diversity_representative.pdb,data/raw/afsample2/outputs/frac_015/il2/afsample2/unrelaxed_model_3_pred_8_rand0.15_dropout.pdb
+AFsample2,05_discordance,AFS2:frac_020:model2_pred9,../outputs/md_seeds/AFsample2/05_discordance.pdb,data/raw/afsample2/outputs/frac_020/il2/afsample2/unrelaxed_model_2_pred_9_rand0.2_dropout.pdb
+BioEmu,centroid_01,BioEmu:785,../outputs/md_seeds/BioEmu/centroid_01.pdb,
+BioEmu,centroid_02,BioEmu:580,../outputs/md_seeds/BioEmu/centroid_02.pdb,
+BioEmu,centroid_03,BioEmu:74,../outputs/md_seeds/BioEmu/centroid_03.pdb,

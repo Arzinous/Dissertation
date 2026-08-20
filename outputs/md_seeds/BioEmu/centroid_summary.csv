@@ -1,0 +1,4 @@
+rank,cluster_id,cluster_size,cluster_size_ss_filtered,frame_idx,source,pdb_path,ss_identity_pct,nearest_state,rmsd_to_apo,rmsd_to_holo,rmsd_to_ligand
+1,1,222,117,785,BioEmu:785,../outputs/md_seeds/BioEmu/centroid_01.pdb,69.0,ligand,1.9,2.15,1.6
+2,2,121,56,580,BioEmu:580,../outputs/md_seeds/BioEmu/centroid_02.pdb,69.8,ligand,1.39,1.49,1.05
+3,0,109,56,74,BioEmu:74,../outputs/md_seeds/BioEmu/centroid_03.pdb,72.9,ligand,1.8,1.98,1.67
