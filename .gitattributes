@@ -12,3 +12,4 @@
 # Apptainer/Singularity container images (if ever added — afsample2_v1.1.sif is 6.1GB,
 # NOT recommended to commit; see DATA_SETUP.md)
 *.sif filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
