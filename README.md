@@ -1,0 +1,142 @@
+# Dissertation Computational Appendix — IL-2 Conformational Sampling
+
+**Repository:** github.com/Arzinous/Dissertation
+**Author:** Ioannis (Yannos) Arzinos
+**Supervisor:** Dr. Wojciech Kopec
+**Module:** CHE701P, MSc AI for Drug Discovery, Queen Mary University of London
+
+## 1. Purpose
+
+This repository is the full computational appendix supporting the
+dissertation *"Benchmarking Generative Models for Conformational Sampling Against  Biomolecular Dynamics Simulations."* It contains every
+script, configuration, dataset, notebook, and output needed to
+reproduce the study's four linked workflows end to end: predicting
+conformational ensembles with three deep-learning methods, evaluating
+their biological relevance against a crystallographic reference
+library, seeding molecular dynamics simulations from that evaluation,
+and analysing the resulting trajectories for dynamic relevance and
+reproducibility.
+
+The repository is organised so that a reader with no prior context can
+locate any specific result reported in the dissertation, trace it back
+to the exact command, parameter, or seed that produced it, and rerun
+that step independently.
+
+## 2. Repository Architecture
+
+```
+Dissertation/
+├── 01_ensemble_prediction/     Workflow 1 — ensemble generation
+│   ├── shared_input/            Common IL-2 sequence (PDB 1M47, chain A)
+│   ├── msa_subsampling/         LocalColabFold 1.6.1, MSA-depth sweep (5 conditions, 200 models)
+│   ├── afsample2/                AFsample2 v1.1, dropout sweep (4 conditions, 200 models)
+│   └── bioemu/                   BioEmu 1.3.1, 1000-sample diffusion ensemble
+│
+├── 02_ensemble_analysis/        Workflow 2 — static structural/dynamic-relevance scoring
+│   ├── Appendix1_IL2_Ensemble_Analysis.ipynb   Source notebook
+│   ├── Appendix1_executed.ipynb                 Same notebook, fully executed (all outputs/figures rendered)
+│   ├── data/raw/                                 Reference library + all three ensembles' raw output
+│   └── README.md
+│
+├── 03_md_simulations/           Workflow 3 — GROMACS MD, all 16 systems
+│   ├── mdp/                      The 6 shared .mdp parameter files (minimisation → production)
+│   ├── seeds/, modelling_scripts/, force_field/, box_solvation_ionisation/,
+│   │   energy_minimisation/, equilibration/, production/, replicates/
+│   │                              One README per pipeline stage, each with confirmed
+│   │                              per-system parameters, logs, and any anomalies found
+│   ├── production_data/          Replicate 1 trajectories, all 14 analysed systems
+│   └── replicates_data/          Replicates 2–3, all 14 analysed systems
+│
+├── 04_trajectory_analysis/      Workflow 4 — dynamic reproducibility and state recovery
+│   ├── Appendix2_TrajectoryAnalysis.ipynb       Source notebook
+│   ├── Appendix2_executed.ipynb                  Same notebook, fully executed
+│   └── README.md
+│
+├── 05_visualisation/             VMD-rendered trajectory clips (7 representative systems)
+│
+├── ACKNOWLEDGEMENTS.md
+├── DATA_SETUP.md                 Git LFS setup and exact data-placement checklist
+└── .gitattributes                 Git LFS tracking rules (large binaries only)
+```
+
+Every one of the folders in Workflows 1, 2, and 3 contains its own
+`README.md` documenting exactly what was run, with what parameters, on
+which HPC node, and — where relevant — what could *not* be independently
+confirmed, stated explicitly rather than omitted. This repository-level
+document is an index and reproduction guide; the per-folder READMEs are
+the authoritative record.
+
+## 3. Data and Environments
+
+- **Data volume:** ~6.4 GB, tracked via **Git LFS** (`.xtc`, `.trr`,
+  `.cpt`, `.edr`, `.npz`, `.mp4`). A standard `git clone` followed by
+  `git lfs pull` retrieves everything.
+- **Software environments** are documented per method rather than as a
+  single monolithic environment, since each ensemble-prediction method
+  requires an isolated, sometimes conflicting, dependency stack:
+  - MSA Subsampling: LocalColabFold 1.6.1 (`pixi`-managed; `pixi.lock` included)
+  - AFsample2: Apptainer container (`afsample2_v1.1.sif`, built from
+    `docker.io/kyogesh/afsample2:v1.1`; not committed due to size —
+    source documented in `01_ensemble_prediction/afsample2/README.md`)
+  - BioEmu: dedicated conda environment (`bioemu_environment.yml` +
+    `bioemu_working_env.txt`, both included in full)
+  - GROMACS 2025.4, AMBER99SB-ILDN force field, TIP3P water (all 16 MD systems)
+  - Analysis notebooks: Python (MDTraj, scikit-learn, SciPy, OpenMM/PDBFixer)
+
+## 4. Reproducing the Workflow
+
+```bash
+git clone https://github.com/Arzinous/Dissertation.git
+cd Dissertation
+git lfs pull
+```
+
+Then, in dependency order:
+
+1. **Ensemble prediction** (`01_ensemble_prediction/`) — each method's
+   README gives the exact command/config used. Raw output for all three
+   methods is also already included in `02_ensemble_analysis/data/raw/`,
+   so this step can be skipped if only reproducing the analysis.
+2. **Ensemble analysis** — open and run
+   `02_ensemble_analysis/Appendix1_IL2_Ensemble_Analysis.ipynb`. Requires
+   Python with MDTraj, scikit-learn, SciPy, pandas, matplotlib, OpenMM,
+   and PDBFixer. This step selects the 11 AI-predicted MD seeds.
+3. **MD simulation setup** — `03_md_simulations/` documents system
+   preparation for all 14 systems (3 reference + 11 AI-seeded); GROMACS
+   `.mdp` files are provided verbatim, and every seed's origin traces
+   back to Workflow 2's output.
+4. **Trajectory analysis** — open and run
+   `04_trajectory_analysis/Appendix2_TrajectoryAnalysis.ipynb` against
+   the trajectories in `03_md_simulations/production_data/` and
+   `replicates_data/`.
+
+**Both notebooks have been independently verified to execute
+successfully, start to finish, against the complete real dataset** —
+not merely inspected. The `_executed.ipynb` copy of each notebook is
+the artefact of that verified run, with every figure and table
+reproduced exactly as reported in the dissertation.
+
+## 5. Known Limitations
+
+A small number of provenance gaps were identified during verification
+and are disclosed explicitly, in place, rather than omitted:
+
+- Two AI-seeded systems have incomplete setup-stage logs (missing
+  `pdb2gmx.log`/`genion.log`), though their production trajectories are
+  confirmed complete; one of these (MSA Subsampling `02_fidelity_ligand`)
+  was additionally confirmed to have run without explicit ionisation —
+  verified net-neutral regardless (see
+  `03_md_simulations/box_solvation_ionisation/README.md`).
+- The specific tool used to rebuild/repair two reference crystal
+  structures prior to simulation was not identified.
+- Two systems' `topol.top` files are dated several days after initial
+  system preparation, indicating an unretraced rerun.
+
+None of these affect the completeness or validity of the final 14
+analysed systems' production data, which is independently confirmed
+complete via direct trajectory inspection and cross-checked against
+HPC job scheduler records.
+
+## 6. Acknowledgements
+
+See `ACKNOWLEDGEMENTS.md`.
