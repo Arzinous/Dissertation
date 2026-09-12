@@ -7,18 +7,8 @@ samples directly from a learned approximation of a protein's equilibrium
 conformational distribution, rather than perturbing AlphaFold2's
 inference procedure like the other two methods. It is the only one of
 the three ensemble-generation methods that gives approximate population
-weights alongside structural diversity — but per the lit review (Section
-4.3.1), its published benchmarks show a known apo/holo asymmetry
-(86% success recovering ligand-bound/holo states vs. only 56% for apo
-states), attributed to holo structures being overrepresented in its
-training data.
+weights alongside structural diversity.
 
-**This asymmetry is directly reflected in the seeding design**: BioEmu
-received only 3 cluster-centroid MD seeds, versus 5 seeding criteria each
-for MSA Subsampling and AFsample2 — a deliberate, explicitly documented
-consequence of BioEmu's near-zero fidelity classification across all
-three reference states for this protein, not an oversight or a workflow
-gap.
 
 ## Software / Environment
 
